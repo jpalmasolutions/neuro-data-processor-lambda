@@ -1,0 +1,9 @@
+version = 0.1
+[default.deploy.parameters]
+stack_name = "processing-lambda"
+resolve_s3 = true
+s3_prefix = "processing-lambda"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "ProcessorSqs=\"arn:aws:sqs:us-east-1:165443708813:processing-sqs\" MainS3Bucket=\"lo-glo-neuro-storage\""
+image_repositories = ["QueueConsumerFunction=165443708813.dkr.ecr.us-east-1.amazonaws.com/processinglambda665df0f6/queueconsumerfunction9878b65drepo"]

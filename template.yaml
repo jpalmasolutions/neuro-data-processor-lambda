@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Serverless patterns - SQS to Lambda
+
+Parameters:
+  ProcessorSqs:
+    Type: String
+    Default: arn:aws:sqs:us-east-1:165443708813:processing-sqs
+
+  MainS3Bucket:
+    Type: String
+    Default: lo-glo-neuro-storage
+
+Resources:
+  # Define the consumer Lambda function
+  QueueConsumerFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      FunctionName: neuro-data-processor
+      PackageType: Image
+      Timeout: 60
+      MemorySize: 2048
+      Environment:
+        Variables:
+          LOG_LEVEL: INFO
+          POWERTOOLS_SERVICE_NAME: processor
+      Events:
+        MySQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !Ref ProcessorSqs
+            BatchSize: 1
+            FunctionResponseTypes:
+              - ReportBatchItemFailures
+      Policies:
+        - Statement:
+          - Sid: S3BucketAccess
+            Effect: Allow
+            Action:
+            - s3:GetObject
+            Resource: !Join ['',['arn:aws:s3:::',!Ref MainS3Bucket,'/*']]
+    Metadata:
+      DockerContext: .
+      Dockerfile: Dockerfile
+Outputs:
+  QueueConsumerFunction:
+    Description: QueueConsumerFunction function name
+    Value: !Ref QueueConsumerFunction

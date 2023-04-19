@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SQS System For Processing Neuro Data
+
+Resources:
+  ProcessingSqsDlq:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: processing-dlq
+    
+  ProcessingSqsQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: processing-sqs
+      VisibilityTimeout: 90
+      RedrivePolicy:
+        maxReceiveCount: 5
+        deadLetterTargetArn: !GetAtt ProcessingSqsDlq.Arn
+
+  # Define the SNS topic
+  MySnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: processing-sns
+      # Subscribes the SQS queue to the SNS topic
+      Subscription:
+        - Protocol: sqs
+          Endpoint: !GetAtt ProcessingSqsQueue.Arn
+
+  # Policy allows SNS to publish to this SQS queue
+  SnsToSqsPolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: "Allow SNS publish to SQS"
+            Effect: Allow
+            Principal: 
+              Service: "sns.amazonaws.com"
+            Resource: !GetAtt ProcessingSqsQueue.Arn
+            Action: SQS:SendMessage
+            Condition:
+              ArnEquals:
+                aws:SourceArn: !Ref MySnsTopic
+      Queues:
+        - !Ref ProcessingSqsQueue
+
+Outputs:
+  SqsQueueName:
+    Description: SNS Queue Name
+    Value: !GetAtt ProcessingSqsQueue.QueueName
+
+  SqsQueueARN:
+    Description: SQS Queue ARN
+    Value: !GetAtt ProcessingSqsQueue.Arn
+
+  SqsQueueURL:
+    Description: SQS queue URL
+    Value: !Ref ProcessingSqsQueue
+
+  SqsDLQName:
+    Description: SNS Queue Name
+    Value: !GetAtt ProcessingSqsDlq.QueueName
+
+  SQSqueueARN:
+    Description: SQS Queue ARN
+    Value: !GetAtt ProcessingSqsDlq.Arn
+
+  SQSqueueURL:
+    Description: SQS queue URL
+    Value: !Ref ProcessingSqsDlq
+
+  MySnsTopicArn:
+    Description: SNS topic ARN
+    Value: !Ref MySnsTopic
