@@ -40,8 +40,6 @@ def process_block(data: StructType):
     for index in range(0, len(temp_filter_data)):
         temp_filter_data[index] = sosfiltfilt(sos=filter_boi, x=lfp_data_stream[index])
 
-    logger.info(temp_filter_data)
-
     lfp_data_stream: numpy.ndarray = temp_filter_data
 
     exp_duration = inverse_sampling * len(lfp_data_stream[1])
