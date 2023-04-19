@@ -19,6 +19,8 @@ scipy = "==1.10.1"
 python-lambda-local = "*"
 black = "*"
 flake8 = "*"
+flake8-import-order = "==0.18.2"
+isort = "==5.12.0"
 
 [requires]
 python_version = "3.9"
