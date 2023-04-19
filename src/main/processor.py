@@ -1,11 +1,10 @@
-import tdt
-import os
-from tdt import StructType
 import numpy
-from numpy import round
-from src.main.models.block import Block
-from scipy.signal import iirdesign, sosfiltfilt
 from aws_lambda_powertools import Logger
+from numpy import round
+from scipy.signal import iirdesign, sosfiltfilt
+from tdt import StructType
+
+from src.main.models.block import Block
 
 logger = Logger(child=True)
 

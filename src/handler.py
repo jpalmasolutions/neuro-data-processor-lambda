@@ -1,17 +1,14 @@
 import json
 
 from aws_lambda_powertools import Logger, Tracer
-from aws_lambda_powertools.utilities.batch import (
-    BatchProcessor,
-    EventType,
-    process_partial_response,
-)
+from aws_lambda_powertools.utilities.batch import (BatchProcessor, EventType,
+                                                   process_partial_response)
 from aws_lambda_powertools.utilities.data_classes.sqs_event import SQSRecord
 from aws_lambda_powertools.utilities.typing import LambdaContext
 from tdt import StructType
 
-from src.main.zips3message import ZipS3Message
 from src.main.processor import process_block
+from src.main.zips3message import ZipS3Message
 
 processor = BatchProcessor(event_type=EventType.SQS)
 tracer = Tracer()

@@ -4,9 +4,9 @@ from tdt import StructType
 
 from src.main.models.epoc import Epoc
 from src.main.models.info import Info
-from src.main.models.snip import Snip
 from src.main.models.lfpx import LFPx
 from src.main.models.pneu import PNEu
+from src.main.models.snip import Snip
 from src.main.models.stream import Stream
 
 
