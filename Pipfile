@@ -16,10 +16,8 @@ dataclasses-json = "==0.5.7"
 scipy = "==1.10.1"
 
 [dev-packages]
-python-lambda-local = "*"
 black = "*"
 flake8 = "*"
-flake8-import-order = "==0.18.2"
 isort = "==5.12.0"
 
 [requires]
