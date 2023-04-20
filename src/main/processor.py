@@ -52,4 +52,16 @@ def process_block(data: StructType):
     trial_ticks = round(trial_size * round(sampling_rate))
     average_channel_data = numpy.zeros(16, trial_ticks)
 
-    logger.info(f"Data: {lfp_data_stream}")
+    logger.info(
+        msg="Data",
+        lfp=lfp_data_stream,
+        spatial_frequency=spatial_frequency,
+        contrast=contrast,
+        orientation=orientation,
+        x_axis=x_axis,
+        trial_x_axis=trial_x_axis,
+        trial_ticks=trial_ticks,
+        number_of_trials=number_of_trials,
+        truncate_start=truncate_start,
+        average_channel_data=average_channel_data,
+    )
