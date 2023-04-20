@@ -3,6 +3,7 @@ FROM public.ecr.aws/lambda/python:3.10
 COPY src/. ${LAMBDA_TASK_ROOT}/src/
 COPY Pipfile ${LAMBDA_TASK_ROOT}
 
+RUN python3.10 -m pip install --upgrade pip
 RUN python3.10 -m pip install pipenv
 RUN python3.10 -m pipenv install
 RUN python3.10 -m pipenv requirements > ${LAMBDA_TASK_ROOT}/requirements.txt
