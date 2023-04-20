@@ -5,13 +5,14 @@ from scipy.signal import iirdesign, sosfiltfilt
 from tdt import StructType
 
 from src.main.models.block import Block
+from src.main.constants import CONFIG
 
 logger = Logger(child=True)
 
 
 def process_block(data: StructType):
     logger.info("Processing Block")
-    trial_size = 1.2
+    trial_size: float = CONFIG.get("trial_size", 0.0)
 
     block_data: Block = Block(data)
 
@@ -61,6 +62,7 @@ def process_block(data: StructType):
         x_axis=x_axis,
         trial_x_axis=trial_x_axis,
         trial_ticks=trial_ticks,
+        trial_size=trial_size,
         number_of_trials=number_of_trials,
         truncate_start=truncate_start,
         average_channel_data=average_channel_data,
